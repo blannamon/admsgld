@@ -63,6 +63,9 @@ function renderModel(product) {
 
   image.src = `renders/model${product.id}.png`;
   image.alt = product.title[state.lang];
+  image.loading = "eager";
+  image.fetchPriority = "high";
+  image.decoding = "async";
   breadcrumb.textContent = product.title[state.lang];
   title.textContent = product.type[state.lang];
   subtitle.textContent = product.stones[state.lang];

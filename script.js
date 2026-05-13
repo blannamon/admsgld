@@ -122,14 +122,14 @@ function sortProducts(items) {
   return sorted;
 }
 
-function createProductCard(product) {
+function createProductCard(product, index) {
   const article = document.createElement("article");
   article.className = "product-card";
   article.dataset.category = product.category;
   article.setAttribute("role", "link");
   article.tabIndex = 0;
   const detailUrl = `model.html?id=${product.id}`;
-  const imagePath = `renders/model${product.id}.png`;
+  const imagePath = `renders/renders_thumbs/model${product.id}.webp`;
 
   function openDetail() {
     window.location.href = detailUrl;
@@ -187,7 +187,8 @@ function createProductCard(product) {
   image.className = "model-image";
   image.src = imagePath;
   image.alt = product.title[state.lang];
-  image.loading = "lazy";
+  image.loading = index < 4 ? "eager" : "lazy";
+  image.fetchPriority = index < 4 ? "high" : "auto";
   image.decoding = "async";
   image.addEventListener("load", () => {
     visual.classList.add("is-loaded");
@@ -280,8 +281,8 @@ function renderProducts() {
     return;
   }
 
-  visibleProducts.forEach((product) => {
-    grid.append(createProductCard(product));
+  visibleProducts.forEach((product, index) => {
+    grid.append(createProductCard(product, index));
   });
 
   refreshIcons();
