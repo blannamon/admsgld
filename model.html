@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adamas Gold | Модель</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="header-shell">
+        <a class="brand" href="index.html" aria-label="Adamas Gold">
+          <img src="Logo.png" alt="Adamas Gold" />
+        </a>
+
+        <nav class="main-nav" aria-label="Основная навигация">
+          <a href="index.html#catalog">Каталог</a>
+          <a href="index.html#studio">Ювелирная мастерская</a>
+          <a href="index.html#news">Новости</a>
+          <a href="index.html#contacts">Контакты</a>
+        </nav>
+
+        <div class="header-actions">
+          <button class="header-icon-button cart-toggle-button" type="button" aria-label="Корзина" data-cart-toggle data-cart-label>
+            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+            <span class="cart-count-badge" hidden><span class="cart-count-badge-value">0</span></span>
+          </button>
+
+          <div class="language-switch" aria-label="Переключатель языка">
+            <button class="language-button active" type="button" data-lang="ru" aria-pressed="true">RU</button>
+            <button class="language-button" type="button" data-lang="ro" aria-pressed="false">RO</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="model-page">
+      <section class="model-page-shell">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="index.html">Главная</a>
+          <span aria-hidden="true">/</span>
+          <a href="index.html#catalog">Каталог 3D-моделей</a>
+          <span aria-hidden="true">/</span>
+          <span id="model-breadcrumb">Модель</span>
+        </nav>
+
+        <section class="model-hero" aria-labelledby="model-title">
+          <div class="model-gallery-card">
+            <img id="model-image" class="model-detail-image" src="" alt="" />
+          </div>
+
+          <div class="model-summary-card">
+            <p class="eyebrow">Ювелирная мастерская Adamas Gold</p>
+            <h1 id="model-title">Модель</h1>
+            <p id="model-subtitle" class="model-subtitle"></p>
+
+            <div class="model-price-line">
+              <i data-lucide="coins" aria-hidden="true"></i>
+              <strong id="model-price"></strong>
+            </div>
+
+            <dl class="model-specs">
+              <div>
+                <dt>Тип изделия</dt>
+                <dd id="model-type"></dd>
+              </div>
+              <div>
+                <dt>Материал</dt>
+                <dd id="model-material"></dd>
+              </div>
+              <div>
+                <dt>Особенности</dt>
+                <dd id="model-stones"></dd>
+              </div>
+              <div>
+                <dt>Код модели</dt>
+                <dd id="model-id"></dd>
+              </div>
+            </dl>
+
+            <div class="model-actions">
+              <a class="primary-button" href="index.html#contacts">Заказать изготовление</a>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script src="products.js"></script>
+    <script src="translations.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="cart.js"></script>
+    <script src="model.js"></script>
+  </body>
+</html>

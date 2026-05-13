@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adamas Gold | Каталог 3D-моделей</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#catalog" data-i18n="skipToCatalog">Перейти к каталогу</a>
+
+    <header class="site-header">
+      <div class="header-shell">
+        <a class="brand" href="index.html" aria-label="Adamas Gold">
+          <img src="Logo.png" alt="Adamas Gold" />
+        </a>
+
+        <nav class="main-nav" aria-label="Основная навигация">
+          <a href="#catalog" data-i18n="nav.catalog">Каталог</a>
+          <a href="#studio" data-i18n="nav.studio">Ювелирная мастерская</a>
+          <a href="#news" data-i18n="nav.news">Новости</a>
+          <a href="#contacts" data-i18n="nav.contacts">Контакты</a>
+        </nav>
+
+        <div class="header-actions">
+          <form class="search" role="search">
+            <i data-lucide="search" aria-hidden="true"></i>
+            <label class="sr-only" for="site-search" data-i18n="searchLabel">Поиск по каталогу</label>
+            <input id="site-search" type="search" placeholder="Поиск" autocomplete="off" />
+          </form>
+
+          <button class="header-icon-button cart-toggle-button" type="button" aria-label="Корзина" data-cart-toggle data-cart-label>
+            <i data-lucide="shopping-cart" aria-hidden="true"></i>
+            <span class="cart-count-badge" hidden><span class="cart-count-badge-value">0</span></span>
+          </button>
+
+          <div class="language-switch" aria-label="Переключатель языка">
+            <button class="language-button active" type="button" data-lang="ru" aria-pressed="true">RU</button>
+            <button class="language-button" type="button" data-lang="ro" aria-pressed="false">RO</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="page-intro" aria-labelledby="catalog-title">
+        <nav class="breadcrumbs" aria-label="Хлебные крошки">
+          <a href="#" data-i18n="breadcrumbs.home">Главная</a>
+          <span aria-hidden="true">/</span>
+          <span data-i18n="breadcrumbs.catalog">Каталог 3D-моделей</span>
+        </nav>
+
+        <div class="intro-panel">
+          <div class="intro-copy">
+            <h1 id="catalog-title" data-i18n="intro.title">Каталог моделей</h1>
+            <p data-i18n="intro.description" data-i18n-mode="html">
+              Выберите понравившийся дизайн, а мы изготовим украшение для вас<br />
+              в
+              нужном металле, размере и с подходящими камнями.
+            </p>
+          </div>
+
+          <ul class="benefits" aria-label="Преимущества мастерской">
+            <li>
+              <span class="benefit-icon" aria-hidden="true">
+                <i data-lucide="shield-check"></i>
+              </span>
+              <span data-i18n="benefits.experts" data-i18n-mode="html">Модели от<br />ювелиров<br />с опытом</span>
+            </li>
+            <li>
+              <span class="benefit-icon" aria-hidden="true">
+                <i data-lucide="tag"></i>
+              </span>
+              <span data-i18n="benefits.workshop" data-i18n-mode="html">Изготовление<br />в собственной<br />мастерской</span>
+            </li>
+            <li>
+              <span class="benefit-icon" aria-hidden="true">
+                <i data-lucide="gem"></i>
+              </span>
+              <span data-i18n="benefits.materials" data-i18n-mode="html">Качественные<br />материалы<br />и камни</span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="category-section" aria-label="Категории украшений">
+        <div class="category-tabs-shell">
+          <div class="category-tabs" role="tablist" aria-label="Категории украшений">
+            <button class="category-tab active" type="button" data-category="all" role="tab" aria-selected="true">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="layout-grid"></i></span>
+              Все модели
+            </button>
+            <button class="category-tab" type="button" data-category="cross" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M12 4v16" />
+                  <path d="M7 9h10" />
+                </svg>
+              </span>
+              Крестики/иконки
+            </button>
+            <button class="category-tab" type="button" data-category="bracelet" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="link"></i></span>
+              Браслеты
+            </button>
+            <button class="category-tab" type="button" data-category="ring" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="circle"></i></span>
+              Кольца
+            </button>
+            <button class="category-tab" type="button" data-category="exclusive" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="star"></i></span>
+              Эксклюзив
+            </button>
+            <button class="category-tab" type="button" data-category="pendant" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="gem"></i></span>
+              Подвески
+            </button>
+            <button class="category-tab" type="button" data-category="chain" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="link-2"></i></span>
+              Цепи
+            </button>
+            <button class="category-tab" type="button" data-category="earrings" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="sparkles"></i></span>
+              Серьги
+            </button>
+            <button class="category-tab" type="button" data-category="signet" role="tab" aria-selected="false">
+              <span class="tab-icon" aria-hidden="true"><i data-lucide="hexagon"></i></span>
+              Печатки
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="catalog-layout" id="catalog" aria-labelledby="models-title">
+        <div class="products-area">
+          <div class="catalog-toolbar">
+            <div>
+              <h2 id="models-title">Найдено моделей: <span id="model-count">12</span></h2>
+            </div>
+            <div class="toolbar-controls">
+              <label for="sort-models">Сортировать</label>
+              <select id="sort-models">
+                <option value="new">Сначала новые</option>
+                <option value="popular">Популярные</option>
+                <option value="price">По стоимости</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="product-grid" aria-live="polite"></div>
+        </div>
+
+        <aside class="order-sidebar" aria-label="Индивидуальный заказ">
+          <article class="custom-card">
+            <div class="custom-sketch" aria-hidden="true">
+              <i data-lucide="drafting-compass"></i>
+            </div>
+            <h2 data-i18n="custom.title">Нужна другая модель?</h2>
+            <p data-i18n="custom.description">
+              Создадим для вас уникальное украшение по индивидуальному дизайну и
+              вашим пожеланиям.
+            </p>
+            <a class="primary-button" href="#contacts" data-i18n="custom.button">Заказать индивидуальный дизайн</a>
+            <p class="custom-note" data-i18n="custom.note">Сроки изготовления от 7 до 20 дней</p>
+          </article>
+        </aside>
+      </section>
+
+    </main>
+
+    <script src="products.js"></script>
+    <script src="translations.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+    <script src="cart.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
