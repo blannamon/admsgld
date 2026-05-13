@@ -183,10 +183,6 @@ function createProductCard(product) {
   const visual = document.createElement("div");
   visual.className = "model-visual";
 
-  const shadow = document.createElement("span");
-  shadow.className = "model-shadow";
-  shadow.setAttribute("aria-hidden", "true");
-
   const image = document.createElement("img");
   image.className = "model-image";
   image.src = imagePath;
@@ -194,15 +190,9 @@ function createProductCard(product) {
   image.loading = "lazy";
   image.decoding = "async";
   image.addEventListener("load", () => {
-    visual.classList.add("has-image");
+    visual.classList.add("is-loaded");
   });
-
-  const placeholder = document.createElement("div");
-  placeholder.className = `placeholder ${product.visual}`;
-  placeholder.setAttribute("aria-hidden", "true");
-  placeholder.innerHTML = '<span class="stone"></span>';
-
-  visual.append(shadow, image, placeholder);
+  visual.append(image);
 
   const info = document.createElement("div");
   info.className = "product-info";
