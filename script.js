@@ -545,6 +545,7 @@ languageButtons.forEach((button) => {
     state.lang = button.dataset.lang;
     window.localStorage.setItem(LANGUAGE_KEY, state.lang);
     updateLanguage();
+    document.dispatchEvent(new CustomEvent("adamas-language-change", { detail: { lang: state.lang } }));
     setMobileMenu(false);
   });
 });

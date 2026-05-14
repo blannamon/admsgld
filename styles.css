@@ -1720,6 +1720,11 @@ body.cart-open .cart-sidebar {
     --container: min(91vw, 720px);
   }
 
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
   body {
     font-size: 15px;
   }
@@ -1988,6 +1993,7 @@ body.cart-open .cart-sidebar {
     margin-top: 18px;
     margin-left: calc(50% - 50vw);
     overflow-x: auto;
+    overscroll-behavior-x: contain;
     padding: 0 16px 2px;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;

@@ -1,6 +1,43 @@
 (function () {
   const STORAGE_KEY = "adamas-cart";
+  const LANGUAGE_KEY = "adamas-language";
   const products = window.PRODUCTS || [];
+  const copy = {
+    ru: {
+      sidebarLabel: "Корзина",
+      close: "Закрыть корзину",
+      selected: "Выбрано моделей:",
+      emptyTitle: "Корзина пуста",
+      emptyText: "Добавьте модели из каталога, чтобы оформить заказ.",
+      priceFrom: "от",
+      priceCurrency: "леев",
+      remove: "Удалить",
+      comment: "Комментарий",
+      commentPlaceholder: "Опционально: размер, желаемые камни, металл или другие пожелания",
+      request: "Оформить запрос",
+    },
+    ro: {
+      sidebarLabel: "Cos",
+      close: "Inchide cosul",
+      selected: "Modele selectate:",
+      emptyTitle: "Cosul este gol",
+      emptyText: "Adaugati modele din catalog pentru a trimite solicitarea.",
+      priceFrom: "de la",
+      priceCurrency: "MDL",
+      remove: "Elimina",
+      comment: "Comentariu",
+      commentPlaceholder: "Optional: marime, pietre dorite, metal sau alte preferinte",
+      request: "Trimite cererea",
+    },
+  };
+
+  function getLang() {
+    return window.localStorage.getItem(LANGUAGE_KEY) || "ru";
+  }
+
+  function getCopy() {
+    return copy[getLang()] || copy.ru;
+  }
 
   function refreshIcons() {
     if (window.lucide && typeof window.lucide.createIcons === "function") {
@@ -9,7 +46,7 @@
   }
 
   function formatPrice(value) {
-    return new Intl.NumberFormat("ru-RU").format(value);
+    return new Intl.NumberFormat(getLang() === "ro" ? "ro-RO" : "ru-RU").format(value);
   }
 
   function readCart() {
@@ -120,17 +157,18 @@
       return;
     }
 
+    const t = getCopy();
     const shell = document.createElement("div");
     shell.className = "cart-sidebar-shell";
     shell.innerHTML = `
-      <button class="cart-backdrop" type="button" aria-label="Закрыть корзину"></button>
-      <aside class="cart-sidebar" aria-label="Корзина">
+      <button class="cart-backdrop" type="button" aria-label="${t.close}"></button>
+      <aside class="cart-sidebar" aria-label="${t.sidebarLabel}">
         <div class="cart-sidebar-header">
           <div class="cart-sidebar-title">
-            <h2>Корзина</h2>
-            <p class="cart-sidebar-count">Выбрано моделей: <strong data-cart-total>0</strong></p>
+            <h2>${t.sidebarLabel}</h2>
+            <p class="cart-sidebar-count">${t.selected} <strong data-cart-total>0</strong></p>
           </div>
-          <button class="cart-close-button" type="button" aria-label="Закрыть корзину">
+          <button class="cart-close-button" type="button" aria-label="${t.close}">
             <i data-lucide="x" aria-hidden="true"></i>
           </button>
         </div>
@@ -149,9 +187,40 @@
 
     const items = readCart();
     const body = document.querySelector(".cart-sidebar-body");
+    const shell = document.querySelector(".cart-sidebar-shell");
     const badges = document.querySelectorAll(".cart-count-badge");
     const totalNode = document.querySelector("[data-cart-total]");
     const total = getTotalCount(items);
+    const lang = getLang();
+    const t = getCopy();
+
+    if (shell) {
+      const sidebar = shell.querySelector(".cart-sidebar");
+      const backdrop = shell.querySelector(".cart-backdrop");
+      const title = shell.querySelector(".cart-sidebar-title h2");
+      const countLabel = shell.querySelector(".cart-sidebar-count");
+      const closeButton = shell.querySelector(".cart-close-button");
+
+      if (sidebar) {
+        sidebar.setAttribute("aria-label", t.sidebarLabel);
+      }
+
+      if (backdrop) {
+        backdrop.setAttribute("aria-label", t.close);
+      }
+
+      if (title) {
+        title.textContent = t.sidebarLabel;
+      }
+
+      if (countLabel) {
+        countLabel.innerHTML = `${t.selected} <strong data-cart-total>${total}</strong>`;
+      }
+
+      if (closeButton) {
+        closeButton.setAttribute("aria-label", t.close);
+      }
+    }
 
     if (totalNode) {
       totalNode.textContent = String(total);
@@ -209,8 +278,8 @@
       body.innerHTML = `
         <div class="cart-empty">
           <i data-lucide="shopping-cart" aria-hidden="true"></i>
-          <h3>Корзина пуста</h3>
-          <p>Добавьте модели из каталога, чтобы оформить заказ.</p>
+          <h3>${t.emptyTitle}</h3>
+          <p>${t.emptyText}</p>
         </div>
       `;
       refreshIcons();
@@ -226,25 +295,25 @@
 
         return `
           <article class="cart-item" data-id="${product.id}">
-            <img class="cart-item-image" src="renders/model${product.id}.png" alt="${product.title.ru}" />
+            <img class="cart-item-image" src="renders/model${product.id}.png" alt="${product.title[lang]}" />
             <div class="cart-item-copy">
-              <h3>${product.type.ru}</h3>
-              <p>${product.stones.ru}</p>
+              <h3>${product.type[lang]}</h3>
+              <p>${product.stones[lang]}</p>
               <div class="cart-item-meta">
-                <strong><i data-lucide="coins" aria-hidden="true"></i>от ${formatPrice(product.price)} леев</strong>
+                <strong><i data-lucide="coins" aria-hidden="true"></i>${t.priceFrom} ${formatPrice(product.price)} ${t.priceCurrency}</strong>
               </div>
             </div>
-            <button class="cart-remove-button" type="button" data-remove-id="${product.id}" aria-label="Удалить ${product.title.ru} из корзины">
+            <button class="cart-remove-button" type="button" data-remove-id="${product.id}" aria-label="${t.remove} ${product.title[lang]}">
               <i data-lucide="trash-2" aria-hidden="true"></i>
             </button>
             <div class="cart-item-comment">
-              <label class="cart-item-comment-label" for="cart-comment-${product.id}">Комментарий</label>
+              <label class="cart-item-comment-label" for="cart-comment-${product.id}">${t.comment}</label>
               <textarea
                 class="cart-item-comment-input"
                 id="cart-comment-${product.id}"
                 data-comment-id="${product.id}"
                 rows="2"
-                placeholder="Опционально: размер, желаемые камни, металл или другие пожелания"
+                placeholder="${t.commentPlaceholder}"
               ></textarea>
             </div>
           </article>
@@ -255,7 +324,7 @@
     body.innerHTML = `
       <div class="cart-items">${rows}</div>
       <div class="cart-summary">
-        <a class="primary-button" href="index.html#contacts">Оформить запрос</a>
+        <a class="primary-button" href="index.html#contacts">${t.request}</a>
       </div>
     `;
 
@@ -344,6 +413,8 @@
     });
     renderCart();
   }
+
+  document.addEventListener("adamas-language-change", renderCart);
 
   window.AdamasCart = {
     add: addToCart,

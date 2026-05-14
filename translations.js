@@ -25,7 +25,7 @@ window.AdamasTranslations = {
       intro: {
         title: "Каталог моделей",
         description:
-          "Выберите понравившийся дизайн, а мы изготовим украшение для вас<br />в нужном металле, размере и с подходящими камнями.",
+          "Выберите понравившийся дизайн, а мы изготовим украшение для вас в нужном металле, размере и с подходящими камнями.",
       },
       benefits: {
         experts: "Модели от<br />ювелиров<br />с опытом",
@@ -90,7 +90,7 @@ window.AdamasTranslations = {
       intro: {
         title: "Catalog de modele",
         description:
-          "Alegeti designul care va place, iar noi vom realiza bijuteria pentru dumneavoastra<br />din metalul dorit, in marimea potrivita si cu pietrele alese.",
+          "Alegeti designul care va place, iar noi vom realiza bijuteria pentru dumneavoastra din metalul dorit, in marimea potrivita si cu pietrele alese.",
       },
       benefits: {
         experts: "Modele create<br />de bijutieri<br />cu experienta",
@@ -114,7 +114,7 @@ window.AdamasTranslations = {
         deadline: "Termen de executie: intre 7 si 20 de zile",
       },
       categories: {
-        all: "Toate modelele",
+        all: "Toate",
         cross: "Cruci/iconite",
         bracelet: "Bratari",
         ring: "Inele",
@@ -122,7 +122,7 @@ window.AdamasTranslations = {
         pendant: "Pandantive",
         chain: "Lanturi",
         earrings: "Cercei",
-        signet: "Inele barbatesti",
+        signet: "Sigiliu",
       },
       sort: {
         new: "Cele mai noi",
