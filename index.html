@@ -44,6 +44,64 @@
             <button class="language-button active" type="button" data-lang="ru" aria-pressed="true">RU</button>
             <button class="language-button" type="button" data-lang="ro" aria-pressed="false">RO</button>
           </div>
+
+          <button class="header-icon-button mobile-menu-toggle" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu">
+            <i data-lucide="menu" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <button class="mobile-menu-backdrop" type="button" aria-label="Закрыть меню"></button>
+
+        <div class="mobile-menu" id="mobile-menu">
+          <div class="mobile-menu-header">
+            <a class="mobile-menu-brand" href="index.html" aria-label="Adamas Gold">
+              <img src="Logo.png" alt="Adamas Gold" />
+            </a>
+            <div class="mobile-menu-header-actions">
+              <button class="cart-close-button mobile-menu-close" type="button" aria-label="Закрыть меню">
+                <i data-lucide="x" aria-hidden="true"></i>
+              </button>
+            </div>
+          </div>
+
+          <nav class="mobile-menu-nav" aria-label="Мобильная навигация">
+            <a href="#catalog" data-i18n="nav.catalog">Каталог</a>
+            <a href="#studio" data-i18n="nav.studio">Ювелирная мастерская</a>
+            <a href="#news" data-i18n="nav.news">Новости</a>
+            <a href="#contacts" data-i18n="nav.contacts">Контакты</a>
+            <div class="mobile-menu-language">
+              <div class="language-switch" aria-label="Переключатель языка">
+                <button class="language-button active" type="button" data-lang="ru" aria-pressed="true">RU</button>
+                <button class="language-button" type="button" data-lang="ro" aria-pressed="false">RO</button>
+              </div>
+            </div>
+          </nav>
+
+          <div class="mobile-menu-footer">
+            <div class="mobile-menu-contact-row" aria-label="Контакты мастерской">
+              <div class="mobile-menu-contacts">
+                <p class="mobile-menu-address">
+                  <i data-lucide="map-pin" aria-hidden="true"></i>
+                  <span>Chisinau, str. Bucuresti 49</span>
+                </p>
+                <p class="mobile-menu-phone">
+                  <i data-lucide="phone" aria-hidden="true"></i>
+                  <span>+373 621 936 54</span>
+                </p>
+              </div>
+              <div class="mobile-menu-socials" aria-label="Социальные сети">
+                <button class="mobile-menu-social" type="button" aria-label="Instagram">
+                  <img src="https://cdn.simpleicons.org/instagram/8B5D2D" alt="" aria-hidden="true" />
+                </button>
+                <button class="mobile-menu-social" type="button" aria-label="Facebook">
+                  <img src="https://cdn.simpleicons.org/facebook/8B5D2D" alt="" aria-hidden="true" />
+                </button>
+                <button class="mobile-menu-social" type="button" aria-label="Google">
+                  <img src="https://cdn.simpleicons.org/google/8B5D2D" alt="" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </header>
@@ -64,6 +122,7 @@
               в
               нужном металле, размере и с подходящими камнями.
             </p>
+            <div class="mobile-category-grid" aria-label="Категории украшений"></div>
           </div>
 
           <ul class="benefits" aria-label="Преимущества мастерской">
@@ -152,12 +211,18 @@
               <h2 id="models-title">Найдено моделей: <span id="model-count">12</span></h2>
             </div>
             <div class="toolbar-controls">
-              <label for="sort-models">Сортировать</label>
-              <select id="sort-models">
-                <option value="new">Сначала новые</option>
-                <option value="popular">Популярные</option>
-                <option value="price">По стоимости</option>
-              </select>
+              <div class="sort-dropdown">
+                <button class="sort-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="sort-menu">
+                  <span class="sort-trigger-label">Сортировать</span>
+                  <span class="sort-trigger-value">Сначала новые</span>
+                  <i data-lucide="chevron-down" aria-hidden="true"></i>
+                </button>
+                <div class="sort-menu" id="sort-menu" role="listbox" aria-label="Сортировка">
+                  <button class="sort-option active" type="button" data-sort="new" role="option" aria-selected="true">Сначала новые</button>
+                  <button class="sort-option" type="button" data-sort="popular" role="option" aria-selected="false">Популярные</button>
+                  <button class="sort-option" type="button" data-sort="price" role="option" aria-selected="false">По стоимости</button>
+                </div>
+              </div>
             </div>
           </div>
 

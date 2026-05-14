@@ -231,7 +231,7 @@
               <h3>${product.type.ru}</h3>
               <p>${product.stones.ru}</p>
               <div class="cart-item-meta">
-                <strong>от ${formatPrice(product.price)} леев</strong>
+                <strong><i data-lucide="coins" aria-hidden="true"></i>от ${formatPrice(product.price)} леев</strong>
               </div>
             </div>
             <button class="cart-remove-button" type="button" data-remove-id="${product.id}" aria-label="Удалить ${product.title.ru} из корзины">

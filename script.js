@@ -13,19 +13,106 @@ const state = {
 const grid = document.querySelector(".product-grid");
 const countNode = document.querySelector("#model-count");
 const searchInput = document.querySelector("#site-search");
-const sortSelect = document.querySelector("#sort-models");
-const sortLabel = document.querySelector(".toolbar-controls label");
+const sortDropdown = document.querySelector(".sort-dropdown");
+const sortTrigger = document.querySelector(".sort-trigger");
+const sortTriggerLabel = document.querySelector(".sort-trigger-label");
+const sortTriggerValue = document.querySelector(".sort-trigger-value");
+const sortMenu = document.querySelector(".sort-menu");
+const sortOptions = document.querySelectorAll(".sort-option");
 const categoryTabs = document.querySelectorAll(".category-tab");
+const mobileCategoryGrid = document.querySelector(".mobile-category-grid");
 const languageButtons = document.querySelectorAll(".language-button");
 const translatableNodes = document.querySelectorAll("[data-i18n]");
 const cartToggleButtons = document.querySelectorAll("[data-cart-label]");
 const siteHeader = document.querySelector(".site-header");
 const categorySection = document.querySelector(".category-section");
+const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+const mobileMenu = document.querySelector(".mobile-menu");
+const mobileMenuBackdrop = document.querySelector(".mobile-menu-backdrop");
+const mobileMenuClose = document.querySelector(".mobile-menu-close");
+
+function getCategoryIconMarkup(category) {
+  const iconMap = {
+    all: "layout-grid",
+    bracelet: "link",
+    ring: "circle",
+    exclusive: "star",
+    pendant: "gem",
+    chain: "link-2",
+    earrings: "sparkles",
+    signet: "hexagon",
+  };
+
+  if (category === "cross") {
+    return `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path d="M12 4v16" />
+        <path d="M7 9h10" />
+      </svg>
+    `;
+  }
+
+  return `<i data-lucide="${iconMap[category] || "layout-grid"}" aria-hidden="true"></i>`;
+}
+
+function getMobileCategoryLabelMarkup(category, label) {
+  if (category !== "cross") {
+    return `<span class="mobile-category-card-label-main">${label}</span>`;
+  }
+
+  const variants = {
+    ru: {
+      main: "Крестики",
+      sub: "и иконки",
+    },
+    ro: {
+      main: "Cruci",
+      sub: "si iconite",
+    },
+  };
+
+  const text = variants[state.lang] || { main: label, sub: "" };
+
+  return `
+    <span class="mobile-category-card-label-main">${text.main}</span>
+    <span class="mobile-category-card-label-sub">${text.sub}</span>
+  `;
+}
 
 function refreshIcons() {
   if (window.lucide && typeof window.lucide.createIcons === "function") {
     window.lucide.createIcons();
   }
+}
+
+function setMobileMenu(open) {
+  if (!mobileMenuToggle || !mobileMenu) {
+    return;
+  }
+
+  document.body.classList.toggle("mobile-menu-open", open);
+  mobileMenuToggle.setAttribute("aria-expanded", open.toString());
+  mobileMenuToggle.setAttribute("aria-label", open ? "Закрыть меню" : "Открыть меню");
+  mobileMenuToggle.innerHTML = `<i data-lucide="${open ? "x" : "menu"}" aria-hidden="true"></i>`;
+  refreshIcons();
+}
+
+function setSortDropdownOpen(open) {
+  if (!sortDropdown || !sortTrigger) {
+    return;
+  }
+
+  sortDropdown.classList.toggle("open", open);
+  sortTrigger.setAttribute("aria-expanded", open.toString());
 }
 
 function syncHeaderOffset() {
@@ -217,11 +304,18 @@ function createProductCard(product, index) {
   description.className = "product-description";
   description.textContent = product.stones[state.lang];
 
+  const mobileSku = document.createElement("p");
+  mobileSku.className = "product-sku-mobile";
+  mobileSku.textContent = `${translations[state.lang].skuLabel} ${product.id}`;
+
   const priceRow = document.createElement("div");
   priceRow.className = "price-row";
+  priceRow.setAttribute("role", "button");
+  priceRow.setAttribute("tabindex", "0");
+  priceRow.setAttribute("aria-label", `${product.title[state.lang]} в корзину`);
   const priceLead = document.createElement("span");
   priceLead.className = "price-lead";
-  priceLead.innerHTML = '<i data-lucide="coins" aria-hidden="true"></i>';
+  priceLead.innerHTML = '<i data-lucide="shopping-cart" aria-hidden="true"></i>';
 
   const price = document.createElement("p");
   price.className = "price";
@@ -236,6 +330,27 @@ function createProductCard(product, index) {
   sku.className = "product-sku";
   sku.textContent = `${translations[state.lang].skuLabel} ${product.id}`;
   priceRow.append(sku);
+
+  priceRow.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    if (window.AdamasCart && typeof window.AdamasCart.toggle === "function") {
+      window.AdamasCart.toggle(product);
+    }
+  });
+
+  priceRow.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter" && event.key !== " ") {
+      return;
+    }
+    event.preventDefault();
+    event.stopPropagation();
+    event.stopImmediatePropagation();
+    if (window.AdamasCart && typeof window.AdamasCart.toggle === "function") {
+      window.AdamasCart.toggle(product);
+    }
+  });
 
   const cartButton = document.createElement("button");
   cartButton.className = "product-cart-button";
@@ -254,7 +369,7 @@ function createProductCard(product, index) {
   });
 
   nameRow.append(name, nameChevron);
-  copy.append(nameRow, description);
+  copy.append(nameRow, description, mobileSku);
   info.append(copy, cartButton, priceRow);
   article.append(favorite, visual, info);
 
@@ -289,6 +404,35 @@ function renderProducts() {
   syncProductCartButtons();
 }
 
+function renderMobileCategoryCards() {
+  if (!mobileCategoryGrid) {
+    return;
+  }
+
+  mobileCategoryGrid.replaceChildren();
+
+  Object.entries(translations[state.lang].categories).forEach(([category, label]) => {
+    const button = document.createElement("button");
+    const isActive = category === state.category;
+
+    button.className = "mobile-category-card";
+    button.type = "button";
+    button.dataset.category = category;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", isActive.toString());
+    button.innerHTML = `
+      <span class="mobile-category-card-icon" aria-hidden="true">${getCategoryIconMarkup(category)}</span>
+      <span class="mobile-category-card-label">${getMobileCategoryLabelMarkup(category, label)}</span>
+    `;
+
+    button.addEventListener("click", () => {
+      setCategory(category);
+    });
+
+    mobileCategoryGrid.append(button);
+  });
+}
+
 function updateCategoryTabs() {
   categoryTabs.forEach((tab) => {
     const isActive = tab.dataset.category === state.category;
@@ -298,6 +442,38 @@ function updateCategoryTabs() {
     tab.classList.toggle("active", isActive);
     tab.setAttribute("aria-selected", isActive.toString());
   });
+}
+
+function updateSortDropdown() {
+  if (sortTriggerLabel) {
+    sortTriggerLabel.textContent = translations[state.lang].sortLabel;
+  }
+
+  if (sortTriggerValue) {
+    sortTriggerValue.textContent = translations[state.lang].sort[state.sort];
+  }
+
+  if (sortTrigger) {
+    sortTrigger.setAttribute("aria-label", translations[state.lang].sortLabel);
+  }
+
+  if (sortMenu) {
+    sortMenu.setAttribute("aria-label", translations[state.lang].sortLabel);
+  }
+
+  sortOptions.forEach((option) => {
+    const isActive = option.dataset.sort === state.sort;
+    option.textContent = translations[state.lang].sort[option.dataset.sort];
+    option.classList.toggle("active", isActive);
+    option.setAttribute("aria-selected", isActive.toString());
+  });
+}
+
+function setCategory(category) {
+  state.category = category;
+  updateCategoryTabs();
+  renderMobileCategoryCards();
+  renderProducts();
 }
 
 function updateLanguage() {
@@ -327,14 +503,6 @@ function updateLanguage() {
     modelsTitle.firstChild.textContent = `${translations[state.lang].found} `;
   }
 
-  if (sortLabel) {
-    sortLabel.textContent = translations[state.lang].sortLabel;
-  }
-
-  [...sortSelect.options].forEach((option) => {
-    option.textContent = translations[state.lang].sort[option.value];
-  });
-
   languageButtons.forEach((button) => {
     const isActive = button.dataset.lang === state.lang;
     button.classList.toggle("active", isActive);
@@ -342,15 +510,15 @@ function updateLanguage() {
   });
 
   updateCategoryTabs();
+  updateSortDropdown();
+  renderMobileCategoryCards();
   renderProducts();
   syncCategoryStickyOffset();
 }
 
 categoryTabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    state.category = tab.dataset.category;
-    updateCategoryTabs();
-    renderProducts();
+    setCategory(tab.dataset.category);
   });
 });
 
@@ -359,9 +527,17 @@ searchInput.addEventListener("input", (event) => {
   renderProducts();
 });
 
-sortSelect.addEventListener("change", (event) => {
-  state.sort = event.target.value;
-  renderProducts();
+sortTrigger?.addEventListener("click", () => {
+  setSortDropdownOpen(!sortDropdown.classList.contains("open"));
+});
+
+sortOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    state.sort = option.dataset.sort;
+    updateSortDropdown();
+    renderProducts();
+    setSortDropdownOpen(false);
+  });
 });
 
 languageButtons.forEach((button) => {
@@ -369,7 +545,43 @@ languageButtons.forEach((button) => {
     state.lang = button.dataset.lang;
     window.localStorage.setItem(LANGUAGE_KEY, state.lang);
     updateLanguage();
+    setMobileMenu(false);
   });
+});
+
+if (mobileMenuToggle && mobileMenu) {
+  mobileMenuToggle.addEventListener("click", () => {
+    setMobileMenu(!document.body.classList.contains("mobile-menu-open"));
+  });
+
+  mobileMenuBackdrop?.addEventListener("click", () => {
+    setMobileMenu(false);
+  });
+
+  mobileMenuClose?.addEventListener("click", () => {
+    setMobileMenu(false);
+  });
+
+  mobileMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      setMobileMenu(false);
+    });
+  });
+}
+
+document.addEventListener("click", (event) => {
+  if (!sortDropdown || sortDropdown.contains(event.target)) {
+    return;
+  }
+
+  setSortDropdownOpen(false);
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    setSortDropdownOpen(false);
+    setMobileMenu(false);
+  }
 });
 
 document.addEventListener("adamas-cart-change", syncProductCartButtons);
